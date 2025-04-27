@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speech Recognition & Synthesis</title>
+</head>
+<body>
+
+    <h1>Speech-to-Text & Text-to-Speech</h1>
+    
+    <!-- Speech-to-Text -->
+    <button onclick="startListening()">Start Speech-to-Text</button>
+    <p id="outputText">Your speech will appear here...</p>
+
+    <!-- Text-to-Speech -->
+    <textarea id="textInput" placeholder="Enter text to speak"></textarea>
+    <button onclick="speakText()">Speak</button>
+    
+    <script>
+        // Speech-to-Text 
+        function startListening() {
+            const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.lang = "en-US";
+            recognition.start();
+
+            recognition.onresult = function(event) {
+                const transcript = event.results[0][0].transcript;
+                document.getElementById("outputText").innerText = transcript;
+            };
+
+            recognition.onerror = function(event) {
+                console.log("Speech recognition error", event);
+            };
+        }
+
+        // Text-to-Speech 
+        function speakText() {
+            const text = document.getElementById("textInput").value;
+            const speech = new SpeechSynthesisUtterance(text);
+            speech.lang = "en-US";
+            window.speechSynthesis.speak(speech);
+        }
+    </script>
+
+</body>
+</html>
